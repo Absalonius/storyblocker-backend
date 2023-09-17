@@ -37,14 +37,22 @@ do {
     print("Unexpected error: \(error)")
 }
 //: User Sign Out
-do {
-    let result = try await Amplify.Auth.signIn(
-        username: username,
-        password: password
-    )
-    print("Sign in successful: \(result.isSignedIn)")
-} catch let error as AuthError {
-    print("Sign in failed with error: \(error)")
-} catch {
-    print("Unexpected error: \(error)")
+let result = await Amplify.Auth.signOut()
+if let signOutResult = result as? AWSCognitoSignOutResult {
+    print("Local signout successful: \(signOutResult.signedOutLocally)")
+    switch signOutResult {
+    case .complete:
+        print("SignOut completed")
+    case .failed(let error):
+        print("SignOut failed with \(error)")
+    case let .partial(revokeTokenError, globalSignOutError, hostedUIError):
+        print(
+        """
+        SignOut is partial.
+        RevokeTokenError: \(String(describing: revokeTokenError))
+        GlobalSignOutError: \(String(describing: globalSignOutError))
+        HostedUIError: \(String(describing: hostedUIError))
+        """
+        )
+    }
 }
