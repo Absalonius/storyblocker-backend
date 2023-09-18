@@ -6,7 +6,6 @@ import AWSPluginsCore
 func createUserAuth() async {
     var model = UserAuth(
 		userid: "Lorem ipsum dolor sit amet",
-		lastlogin: try Temporal.DateTime(iso8601String: "1970-01-01T12:30:23.999Z"),
 		role: "Lorem ipsum dolor sit amet",
 		credits: 1020,
 		email: "test12346789@testemailtestemail.com",
